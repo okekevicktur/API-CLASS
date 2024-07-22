@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>API CALLS USING FETCH</title>
+    <script>
+      //   fetch("https://jsonplaceholder.typicode.com/todos")
+      //     .then((response) => response.json())
+      //     .then((json) => console.log(json));
+
+      //   fetch("https://jsonplaceholder.typicode.com/todos")
+      //     .then((response) => {
+      //       if (response.ok) {
+      //         // console.log(response.json);
+      //         return response.json();
+      //       } else {
+      //         throw new Error("Error: " + response.status);
+      //       }
+      //     })
+      //     .then((data) => console.log(data))
+      //     .catch((error) => console.error(error));
+      //   const apiUrl = "https://api.dictionaryapi.dev/api/v2/entries/en";
+      async function fetchData(apiUrl) {
+        try {
+          const response = await fetch(apiUrl);
+          if (!response.ok) {
+            return console.log("Error: " + response.status);
+          } else {
+            const data = await response.json();
+            console.log(data);
+
+            // Map through the data and create HTML elements
+            data.map((item, index) => {
+              // Create h1 and p elements
+              const h1 = document.createElement("h1");
+              const p = document.createElement("p");
+              const itemWrapper = document.createElement("div");
+              // Add a class to the new div
+              itemWrapper.classList.add("itemWrapperClass");
+              // Add text content to the elements
+              h1.textContent = `Item Id:  ${item.id}`;
+              p.textContent = `Title: ${item.title}`;
+
+              // Append the elements to the page (e.g., a container div)
+              const container = document.getElementById("container");
+              itemWrapper.appendChild(h1);
+              itemWrapper.appendChild(p);
+              container.appendChild(itemWrapper);
+            });
+          }
+        } catch (error) {
+          console.error(error);
+        }
+      }
+      const newapi = "https://jsonplaceholder.typicode.com/todos";
+      fetchData(newapi);
+    </script>
+    <style>
+      #container {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+        gap: 10px;
+      }
+      .itemWrapperClass {
+        padding: 5px;
+        border-radius: 7px;
+        background-color: bisque;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Todos API</h1>
+      <div id="container"></div>
+    </main>
+  </body>
+</html>
